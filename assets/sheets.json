@@ -1,0 +1,25 @@
+{
+    "materials": [ 
+        {
+            "material": "grass",
+            "varieties": 3,
+            "traversable": true
+        },
+        {
+            "material": "water",
+            "varieties": 3,
+            "traversable": false
+        },
+        {
+            "material": "rock",
+            "varieties": 3,
+            "traversable": false
+        }
+     ],
+     "player_looks": [
+        {
+            "type": "blob",
+            "amount": 4
+        }
+     ]
+}
