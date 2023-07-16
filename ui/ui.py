@@ -21,10 +21,10 @@ class UI:
         with open("assets/saved_maps.json","w") as file:
             json.dump(self.text_maps,file)
 
-    def draw(self,player):
+    def draw(self,entity_handler):
         self.screen.fill(BLACK)
         self.maps[self.current_map_index].draw(self.screen)
-        player.draw(self.screen)
+        entity_handler.draw_all(self.screen)
 
     def get_text_maps(self):
         with open("assets/saved_maps.json","r") as file:
@@ -32,7 +32,7 @@ class UI:
     
     def get_materials(self):
         materials = {}
-        with open("assets/sheets.json","r") as file:
+        with open("assets/materials.json","r") as file:
             self.materials_list =  json.load(file)['materials']
             for material in self.materials_list:
                 images = self.get_images(f'assets/images/{material["material"]}.png',material['varieties'])

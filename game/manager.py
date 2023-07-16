@@ -3,11 +3,15 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT,BLACK,GREEN,TILE_SIZE,UPDATE_D
 from ui.map import Map
 from game.player import Player
 from ui.ui import UI
+from ui.material import Material
+from game.entity_handler import EntityHandler
 class Manager:
     def __init__(self):
         self.ui = UI(self)
 
-        self.player = Player(4*TILE_SIZE, 4*TILE_SIZE,self.ui.get_images('assets/images/blob.png',4))
+        # player_material = Material('blob',self.ui.get_images('assets/images/blob.png',4),4,True)
+        # self.player = Player(4*TILE_SIZE, 4*TILE_SIZE,player_material)
+        self.entity_handler = EntityHandler(self)
         self.clock = pygame.time.Clock()
         self.edit_mode = False
         
@@ -21,12 +25,12 @@ class Manager:
         update_time = current_time + UPDATE_DELAY
         while True:
             self.clock.tick(60)
-            self.ui.draw(self.player)
+            self.ui.draw(self.entity_handler)
 
             if not self.edit_mode:
                 current_time = pygame.time.get_ticks()
                 if current_time > update_time:
-                    self.player.update(self.ui.screen,self.ui.maps[self.ui.current_map_index])
+                    self.entity_handler.update_all(self.ui.screen,self.ui.maps[self.ui.current_map_index])
                     update_time = current_time + UPDATE_DELAY
 
             if not self.handle_events():
@@ -42,14 +46,14 @@ class Manager:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 elif event.key in KEY_MAP.keys():
-                    self.player.velocity = KEY_MAP[event.key]
+                    self.entity_handler.player.add_velocity(KEY_MAP[event.key])
                 elif event.key == pygame.K_m:
                     self.edit_mode = not self.edit_mode
                 elif event.key == pygame.K_l and self.edit_mode:
                     self.ui.current_map_index = (self.ui.current_map_index + 1) % len(self.ui.maps)
             if event.type == pygame.KEYUP:
                 if event.key in KEY_MAP.keys():
-                    self.player.velocity = (0,0)
+                    self.entity_handler.player.add_velocity((-KEY_MAP[event.key][0],-KEY_MAP[event.key][1]))
             if event.type == pygame.MOUSEBUTTONDOWN and self.edit_mode:
                 mouse_pos = pygame.mouse.get_pos()
                 tile =  self.ui.maps[self.ui.current_map_index].check_tiles(mouse_pos)

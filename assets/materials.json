@@ -16,10 +16,18 @@
             "traversable": false
         }
      ],
-     "player_looks": [
+     "player_materials": [
         {
-            "type": "blob",
-            "amount": 4
+            "material": "blob",
+            "varieties": 4,
+            "traversable": true
+        }
+     ],
+     "enemy_materials": [
+        {
+            "material": "angry_blob",
+            "varieties": 4,
+            "traversable": true
         }
      ]
 }
